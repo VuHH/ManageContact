@@ -1,5 +1,6 @@
 package org.safetrust.managecontacts.service;
 
+import java.util.Optional;
 import org.safetrust.managecontacts.entity.Contact;
 import org.safetrust.managecontacts.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ContactService {

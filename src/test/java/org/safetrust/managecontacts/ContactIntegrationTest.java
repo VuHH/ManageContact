@@ -1,6 +1,11 @@
 package org.safetrust.managecontacts;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import com.jayway.jsonpath.JsonPath;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.safetrust.managecontacts.entity.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +15,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -55,12 +54,8 @@ public class ContactIntegrationTest {
     restTemplate.postForEntity("/api/contact", contact1, Contact.class);
     restTemplate.postForEntity("/api/contact", contact2, Contact.class);
 
-    ResponseEntity<String> response = restTemplate.exchange(
-            "/api/contact",
-            HttpMethod.GET,
-            null,
-            String.class
-    );
+    ResponseEntity<String> response =
+        restTemplate.exchange("/api/contact", HttpMethod.GET, null, String.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 

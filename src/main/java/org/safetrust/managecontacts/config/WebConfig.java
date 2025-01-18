@@ -17,9 +17,6 @@ class WebConfig implements WebMvcConfigurer {
 
   @Bean
   public GroupedOpenApi publicApi() {
-    return GroupedOpenApi.builder()
-            .group("contact")
-            .pathsToMatch("/api/contact/**")
-            .build();
+    return GroupedOpenApi.builder().group("contact").pathsToMatch("/api/contact/**").build();
   }
 }
