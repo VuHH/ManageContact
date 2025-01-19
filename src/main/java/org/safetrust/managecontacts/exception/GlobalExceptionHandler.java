@@ -16,6 +16,13 @@ public class GlobalExceptionHandler {
   private static final Logger logger =
       LoggerFactory.getLogger(GlobalExceptionHandler.class.getName());
 
+    /**
+     * Handles exceptions of type MethodArgumentNotValidException, which are thrown
+     * when method argument validation fails due to constraint violations.
+     *
+     * @param ex the MethodArgumentNotValidException that contains details about the validation errors.
+     * @return a ResponseEntity containing a detailed error message and an HTTP 400 (Bad Request) status.
+     */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
     StringBuilder errorMessage = new StringBuilder("Validation failed:");
@@ -37,6 +44,14 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorMessage.toString(), HttpStatus.BAD_REQUEST);
   }
 
+    /**
+     * Handles exceptions of type ConstraintViolationException, which are thrown
+     * when validation constraints are violated, typically for parameters annotated
+     * with validation annotations in methods.
+     *
+     * @param ex the ConstraintViolationException containing details about the violated constraints.
+     * @return a ResponseEntity with a detailed error message and an HTTP 400 (Bad Request) status code.
+     */
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<String> handleConstraintViolationException(
       ConstraintViolationException ex) {
