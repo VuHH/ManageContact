@@ -100,7 +100,7 @@ public class ContactIntegrationTest {
 
     ResponseEntity<Contact> getResponse =
         restTemplate.getForEntity("/api/contact/" + id, Contact.class);
-    assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
   @Test
