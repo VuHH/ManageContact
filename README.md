@@ -70,11 +70,11 @@ This is a Spring Boot-based application designed to manage contact information e
 ### Contact Endpoints
 | Method | Endpoint             | Description                        |
 |--------|----------------------|------------------------------------|
-| GET    | `/contacts`          | Retrieve all contacts with paging. |
-| GET    | `/contacts/{id}`     | Retrieve details of a contact.     |
-| DELETE | `/contacts/{id}`     | Delete a contact.                  |
-| PUT    | `/contacts/{id}`     | Update contact details.            |
-| GET    | `/contacts/search`   | Search contacts by name.           |
+| GET    | `/api/contact`          | Retrieve all contacts with paging. |
+| GET    | `/api/contact/{id}`     | Retrieve details of a contact.     |
+| DELETE | `/api/contact/{id}`     | Delete a contact.                  |
+| PUT    | `/api/contact/{id}`     | Update contact details.            |
+| GET    | `/api/contact/search`   | Search contacts by name.           |
 
 ---
 
