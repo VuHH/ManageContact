@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,11 +53,13 @@ public class ContactController {
    * Retrieves a specific contact by its unique identifier (ID).
    *
    * @param id the unique identifier of the contact to retrieve, extracted from the URL path.
-   * @return a ResponseEntity containing the Contact object if found, or an appropriate HTTP status
-   *     (e.g., 404 Not Found) if the contact does not exist.
+   * @return a ResponseEntity containing: - The Contact object if found (HTTP 200 OK). - An
+   *     appropriate HTTP status with a detailed message if the contact does not exist (HTTP 404 Not
+   *     Found). - A bad request response if the provided ID is invalid (HTTP 400 Bad Request).
+   * @throws IllegalArgumentException if the provided ID is null or invalid.
    */
   @GetMapping("/{id}")
-  public ResponseEntity<Contact> getContactById(@PathVariable Long id) {
+  public ResponseEntity<?> getContactById(@PathVariable Long id) {
     return contactService.getContactById(id);
   }
 
@@ -64,8 +67,10 @@ public class ContactController {
    * Deletes a specific contact by its unique identifier (ID).
    *
    * @param id the unique identifier of the contact to delete, extracted from the URL path.
-   * @return a ResponseEntity with an appropriate HTTP status: - 204 No Content if the contact is
-   *     successfully deleted. - 404 Not Found if the contact does not exist.
+   * @return a ResponseEntity with: - HTTP 204 No Content if the contact is successfully deleted. -
+   *     HTTP 404 Not Found if the contact with the given ID does not exist. - HTTP 400 Bad Request
+   *     if the provided ID is invalid (null or negative).
+   * @throws IllegalArgumentException if the provided ID is null or invalid.
    */
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteContactById(@PathVariable Long id) {
@@ -76,10 +81,13 @@ public class ContactController {
    * Updates an existing contact with the provided details.
    *
    * @param id the unique identifier of the contact to update, extracted from the URL path.
-   * @param updatedContact a Contact object containing the updated details for the contact.
-   * @return a ResponseEntity containing the updated Contact object if the update is successful, or
-   *     an appropriate HTTP status: - 404 Not Found if the contact does not exist. - 400 Bad
-   *     Request if the updated data fails validation.
+   * @param updatedContact a valid Contact object containing the updated details, provided in the
+   *     request body. Validation is applied to ensure the data is valid.
+   * @return a ResponseEntity containing: - The updated Contact object if the update is successful
+   *     (HTTP 200 OK). - HTTP 404 Not Found if the contact with the given ID does not exist. - HTTP
+   *     400 Bad Request if the provided ID is invalid or if validation on the updated contact
+   *     fails.
+   * @throws IllegalArgumentException if the provided ID is null or invalid.
    */
   @PutMapping("/{id}")
   public ResponseEntity<Contact> updateContact(
@@ -88,13 +96,16 @@ public class ContactController {
   }
 
   /**
-   * Searches for contacts that match the given keyword across specific fields.
+   * Searches for contacts based on the provided keyword with pagination support.
    *
-   * @param searchKeyword the keyword to search for in contact attributes (e.g., name, email, etc.).
+   * @param searchKeyword the keyword to search for in the contacts' attributes (e.g., name, email,
+   *     etc.).
    * @param page the page number to retrieve, defaulting to 0 (the first page) if not specified.
-   * @param size the number of contacts per page, defaulting to 10 if not specified.
-   * @return a Page object containing the matching contacts based on the search criteria and
-   *     pagination parameters.
+   * @param size the number of contacts to retrieve per page, defaulting to 10 if not specified.
+   * @return a Page object containing the matching contacts and pagination metadata. - If matches
+   *     are found, it returns the contacts (HTTP 200 OK). - If no matches are found, it returns an
+   *     empty page.
+   * @throws IllegalArgumentException if the `searchKeyword` is null or empty.
    */
   @GetMapping("/search")
   public Page<Contact> searchContacts(
